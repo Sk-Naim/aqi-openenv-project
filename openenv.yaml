@@ -1,0 +1,13 @@
+name: AQI-Optimization
+
+observation_space:
+  shape: [3]
+
+action_space:
+  n: 3
+
+reward:
+  description: minimize AQI and energy
+
+termination:
+  condition: AQI < 50
