@@ -152,6 +152,20 @@ The environment is exposed via REST APIs:
   <img src="Images/reset()_view.jpeg" width="800"/>
 </p>
 
+## 🔹Step():
+<p align="center">
+  <img src="Images/step()_view.jpeg" width="800"/>
+</p>
+
+## 🔹Get State():
+<p align="center">
+  <img src="Images/get_state()_view.jpeg" width="800"/>
+</p>
+
+## 🔹Hardwre Preview():
+<p align="center">
+  <img src="Images/Hardware_Preview.jpeg" width="800"/>
+</p>
 
 ## 🔁 Environment Logic
 
