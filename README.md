@@ -3,12 +3,12 @@
 A real-world reinforcement learning environment that simulates **Air Quality Index (AQI) optimization** using sensor data, FastAPI, and OpenEnv standards.
 
 This system models how intelligent agents can **reduce pollution levels while minimizing energy consumption**, making it directly applicable to **smart cities, IoT systems, and environmental monitoring platforms**. 
-
+---
 ## 🛠️ Hardware Setup Preview (Esp32MC, MQ135 Sensor, Relay Module, Oled Display):
 <p align="center">
   <img src="Images/Hardware_Preview.jpeg" width="800"/>
 </p>
----
+
 
 ## 🚀 Overview
 
