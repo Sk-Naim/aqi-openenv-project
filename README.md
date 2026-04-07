@@ -4,6 +4,10 @@ A real-world reinforcement learning environment that simulates **Air Quality Ind
 
 This system models how intelligent agents can **reduce pollution levels while minimizing energy consumption**, making it directly applicable to **smart cities, IoT systems, and environmental monitoring platforms**. 
 
+## Hardwre Preview:
+<p align="center">
+  <img src="Images/Hardware_Preview.jpeg" width="800"/>
+</p>
 ---
 
 ## 🚀 Overview
@@ -162,10 +166,6 @@ The environment is exposed via REST APIs:
   <img src="Images/get_state()_view.jpeg" width="800"/>
 </p>
 
-## 🔹Hardwre Preview:
-<p align="center">
-  <img src="Images/Hardware_Preview.jpeg" width="800"/>
-</p>
 
 ## 🔁 Environment Logic
 
