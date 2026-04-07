@@ -147,6 +147,12 @@ The environment is exposed via REST APIs:
   <img src="Images/FastAPI_UI.jpeg" width="800"/>
 </p>
 
+## 🔹Reset():
+<p align="center">
+  <img src="Images/reset()_view.jpeg" width="800"/>
+</p>
+
+
 ## 🔁 Environment Logic
 
 ### AQI Control
