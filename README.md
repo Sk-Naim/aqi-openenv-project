@@ -162,7 +162,7 @@ The environment is exposed via REST APIs:
   <img src="Images/get_state()_view.jpeg" width="800"/>
 </p>
 
-## 🔹Hardwre Preview():
+## 🔹Hardwre Preview:
 <p align="center">
   <img src="Images/Hardware_Preview.jpeg" width="800"/>
 </p>
