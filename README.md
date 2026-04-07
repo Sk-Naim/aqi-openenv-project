@@ -4,7 +4,7 @@ A real-world reinforcement learning environment that simulates **Air Quality Ind
 
 This system models how intelligent agents can **reduce pollution levels while minimizing energy consumption**, making it directly applicable to **smart cities, IoT systems, and environmental monitoring platforms**. 
 
-## Hardwre Preview:
+## Hardwre Preview (Esp32MC,MQ135 Sensor,Relay Module, Oled Display):
 <p align="center">
   <img src="Images/Hardware_Preview.jpeg" width="800"/>
 </p>
