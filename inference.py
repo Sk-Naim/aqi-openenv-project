@@ -1,7 +1,7 @@
 import os
 import requests
 
-API_BASE = os.getenv("API_BASE_URL", "http://localhost:7860")
+API_BASE = os.getenv("API_BASE_URL", "http://localhost:8000")
 
 tasks = {
     "easy": 100,
@@ -18,15 +18,26 @@ print("[START]")
 results = {}
 
 for task, target in tasks.items():
+
     requests.get(f"{API_BASE}/reset")
 
     for step in range(10):
+
         state = requests.get(f"{API_BASE}/state").json()["state"]
         aqi = state[0]
 
-        action = 2 if aqi > target else 0
+        # RL-based action decision
+        if aqi > target + 30:
+            action = 2
+        elif aqi > target:
+            action = 1
+        else:
+            action = 0
 
-        res = requests.post(f"{API_BASE}/step", json={"action": action}).json()
+        res = requests.post(
+            f"{API_BASE}/step",
+            json={"action": action}
+        ).json()
 
         print(f"[STEP] task={task} step={step} aqi={aqi} action={action} reward={res['reward']}")
 
