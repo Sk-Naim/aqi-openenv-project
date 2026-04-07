@@ -137,6 +137,10 @@ The environment is exposed via REST APIs:
 | GET    | /state   | Get current state   |
 
 ---
+## Starting the server uvicorn
+<p align="center">
+  <img src="Images/uvicorn_connection.jpeg" width="600"/>
+</p>
 
 ## 🔁 Environment Logic
 
