@@ -1,36 +1,49 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import List
-import csv
-import os
+import csv, os
 from datetime import datetime
+import numpy as np
 
 app = FastAPI()
 
-# ---------- Typed Models ----------
+# ---------- Models ----------
 class SensorData(BaseModel):
     gas: int
 
 class Action(BaseModel):
     action: int
 
-# ---------- State ----------
-state = [150.0, 30.0, 0.5]  # [AQI, temp, noise]
+# ---------- STATE ----------
+state = [150.0, 30.0, 0.5]
 
-# ---------- Metrics ----------
+# ---------- RL Q-TABLE ----------
+Q = {}
+
+def get_state_key(aqi):
+    return int(aqi // 50)
+
+def choose_action(state):
+    key = get_state_key(state[0])
+
+    if key not in Q:
+        Q[key] = [0, 0, 0]
+
+    return int(np.argmax(Q[key]))
+
+# ---------- METRICS ----------
 total_tx = 0
 success_tx = 0
-energy_per_tx = 0.1584  # Joules approx
+energy_per_tx = 0.1584
 
-# ---------- CSV Setup ----------
+# ---------- CSV ----------
 file_name = "aqi_data.csv"
 
 if not os.path.exists(file_name):
-    with open(file_name, mode='w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(["Timestamp", "Gas", "AQI", "Action", "PDR", "Energy"])
+    with open(file_name, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["Time","Gas","AQI","Action","PDR","Energy"])
 
-# ---------- AQI Endpoint ----------
+# ---------- SENSOR ENDPOINT ----------
 @app.post("/data")
 def receive_data(data: SensorData):
     global state, total_tx, success_tx
@@ -38,43 +51,39 @@ def receive_data(data: SensorData):
     gas = data.gas
     total_tx += 1
 
-    # AQI calculation
+    # AQI conversion
     aqi = int((gas / 4095) * 500)
 
-    # Action logic
-    if aqi > 150:
-        action = 2
-    elif aqi > 100:
-        action = 1
-    else:
-        action = 0
+    # RL decision
+    action = choose_action([aqi, 30, 0.5])
 
     success_tx += 1
+
     pdr = success_tx / total_tx
     total_energy = total_tx * energy_per_tx
 
     state[0] = aqi
 
-    # ---------- SAVE TO CSV ----------
-    with open(file_name, mode='a', newline='') as file:
-        writer = csv.writer(file)
+    # Save CSV
+    with open(file_name, "a", newline="") as f:
+        writer = csv.writer(f)
         writer.writerow([
             datetime.now(),
             gas,
             aqi,
             action,
-            round(pdr, 3),
-            round(total_energy, 3)
+            round(pdr,3),
+            round(total_energy,3)
         ])
 
     return {
         "action": action,
         "aqi": aqi,
-        "pdr": round(pdr, 3),
-        "energy": round(total_energy, 3)
+        "pdr": round(pdr,3),
+        "energy": round(total_energy,3)
     }
 
-# ---------- OpenEnv REQUIRED ----------
+# ---------- OPENENV ----------
 @app.get("/reset")
 def reset():
     global state
@@ -85,8 +94,10 @@ def reset():
 def step(action: Action):
     global state
 
+    current_state = state.copy()
     aqi = state[0]
 
+    # Apply action
     if action.action == 1:
         aqi -= 10
     elif action.action == 2:
@@ -96,6 +107,25 @@ def step(action: Action):
     reward = -aqi - 0.1 * energy
 
     done = aqi < 50
+
+    next_state = [aqi, state[1], state[2]]
+
+    # RL UPDATE
+    key = int(current_state[0] // 50)
+    next_key = int(aqi // 50)
+
+    if key not in Q:
+        Q[key] = [0,0,0]
+    if next_key not in Q:
+        Q[next_key] = [0,0,0]
+
+    lr = 0.1
+    gamma = 0.9
+
+    Q[key][action.action] += lr * (
+        reward + gamma * max(Q[next_key]) - Q[key][action.action]
+    )
+
     state[0] = aqi
 
     return {
