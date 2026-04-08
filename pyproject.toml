@@ -1,0 +1,77 @@
+# ==============================
+# 🏗 BUILD SYSTEM
+# ==============================
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+# ==============================
+# 📦 PROJECT INFO
+# ==============================
+[project]
+name = "aqi-openenv-project"
+version = "0.1.0"
+description = "AQI RL Optimization Environment with OpenEnv, FastAPI, and ESP32 integration"
+readme = "README.md"
+requires-python = ">=3.10"
+
+authors = [
+    { name = "Sk Naimuddin" }
+]
+
+dependencies = [
+    # OpenEnv core
+    "openenv-core[core]>=0.2.2",
+
+    # API + server
+    "fastapi>=0.110.0",
+    "uvicorn>=0.29.0",
+
+    # RL + computation
+    "numpy>=1.26.0",
+
+    # Data validation
+    "pydantic>=2.7.0",
+
+    # API testing / inference
+    "requests>=2.31.0"
+]
+
+
+# ==============================
+# 🧪 OPTIONAL DEV DEPENDENCIES
+# ==============================
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.0.0"
+]
+
+
+# ==============================
+# 🚀 ENTRY POINTS
+# ==============================
+[project.scripts]
+# Run using:
+# uv run server
+# OR
+# python -m aqi_openenv_project.server.app
+server = "aqi_openenv_project.server.app:main"
+
+
+# ==============================
+# 📂 PACKAGE CONFIGURATION
+# ==============================
+[tool.setuptools]
+include-package-data = true
+
+packages = [
+    "aqi_openenv_project",
+    "aqi_openenv_project.server"
+]
+
+package-dir = { 
+    "aqi_openenv_project" = ".", 
+    "aqi_openenv_project.server" = "server" 
+}
